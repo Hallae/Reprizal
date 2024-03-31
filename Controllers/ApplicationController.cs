@@ -43,6 +43,11 @@ namespace myApi.Controllers
         [HttpPost("Add")]
         public async Task<ActionResult<List<Application>>> Add(Application _application)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var existingApplication = await _context.Application.FindAsync(_application.id);
             if (existingApplication != null)
             {
@@ -58,6 +63,7 @@ namespace myApi.Controllers
 
             return Ok(await _context.Application.ToListAsync());
         }
+
 
 
 

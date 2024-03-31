@@ -8,7 +8,12 @@ namespace myApi
         public Guid id { get; set; } = Guid.NewGuid();
         // Make the property settable and initialize with a new GUID
         public Guid author { get; set; } = Guid.NewGuid();
+
+
+        [Required]
         public string activity { get; set; }
+
+
         public string name { get; set; }
         public string description { get; set; }
         public string outline { get; set; }
