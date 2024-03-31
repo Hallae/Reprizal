@@ -85,7 +85,7 @@ namespace myApi.Controllers
             return Ok(applications);
         }
 
-        [HttpGet]
+        [HttpGet("Activities")]
         public ActionResult<IEnumerable<Activity>> GetActivities()
         {
             var activities = new List<Activity>
