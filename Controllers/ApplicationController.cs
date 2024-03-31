@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using myApi.Data;
@@ -9,9 +10,10 @@ namespace myApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "Admin")]
     public class ApplicationController : ControllerBase
     {
-
+       
 
         //so changes can be updated directly from database
         private readonly DataContext _context;
@@ -30,16 +32,7 @@ namespace myApi.Controllers
             return Ok(await _context.Application.ToListAsync());
         }
 
-        /* [HttpPost]
-         public async Task<ActionResult<List<NewApplications>>> AddMember(NewApplications _application)
-         {
-             // add and then enables save changes to database.
-             _context.NewApplication.Add(_application);
-             await _context.SaveChangesAsync();
-
-             return Ok(await _context.NewApplication.ToListAsync());
-         }
-        */
+      
         [HttpPost("Add")]
         public async Task<ActionResult<List<Application>>> Add(Application _application)
         {
@@ -135,6 +128,10 @@ namespace myApi.Controllers
             var dbNewApplications = await _context.Application.FindAsync(id);
             if (dbNewApplications == null)
                 return BadRequest("Application not found");
+
+            var dbApplications = await _context.Application.FindAsync(id);
+            if (dbApplications.IsSubmitted)
+                return BadRequest("Submitted applications cannot be deleted");
 
             _context.Application.Remove(dbNewApplications);
             await _context.SaveChangesAsync();

@@ -4,7 +4,8 @@ namespace myApi
 {
     public class Application
     {
-        [Key] // This attribute specifies that the Id property is the primary key
+        [Key]
+        [Required]// This attribute specifies that the Id property is the primary key
         public Guid id { get; set; } = Guid.NewGuid();
         // Make the property settable and initialize with a new GUID
         public Guid author { get; set; } = Guid.NewGuid();
