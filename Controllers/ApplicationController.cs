@@ -103,21 +103,24 @@ namespace myApi.Controllers
         [HttpPut("Update")]
         public async Task<ActionResult<List<Application>>> UpdateApplication(Application request)
         {
-            // add and then enables save changes to database.
             var dbApplications = await _context.Application.FindAsync(request.id);
             if (dbApplications == null)
                 return BadRequest("Application not found");
+
+            // Check if the application has been submitted
+            if (dbApplications.IsSubmitted)
+                return BadRequest("Application has already been submitted and cannot be edited.");
 
             dbApplications.activity = request.activity;
             dbApplications.name = request.name;
             dbApplications.description = request.description;
             dbApplications.outline = request.outline;
 
-
             await _context.SaveChangesAsync();
 
             return Ok(await _context.Application.ToListAsync());
         }
+
 
 
         [HttpDelete("Delete")]
