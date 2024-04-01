@@ -1,4 +1,3 @@
-// Global using directives
 global using Microsoft.EntityFrameworkCore;
 global using Swashbuckle.AspNetCore;
 global using Microsoft.EntityFrameworkCore.Design;
@@ -68,29 +67,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 
 
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddControllers();
-builder.Services.AddRouting();
+    builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddControllers();
+    builder.Services.AddRouting();
 
-var app = builder.Build();
+    var app = builder.Build();
 
-// Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-app.UseCors("NgOrigins");
+    // Configure the HTTP request pipeline
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+ 
 
-app.UseHttpsRedirection();
+    app.UseHttpsRedirection();
 
-app.UseRouting();
+    app.UseRouting();
 
-app.UseAuthentication(); // Ensure authentication middleware is added
+    app.UseAuthentication(); // Ensure authentication middleware is added
 
-app.UseAuthorization(); // Ensure authorization middleware is added
+    app.UseAuthorization(); // Ensure authorization middleware is added
 
-// Map controllers to enable attribute routing
-app.MapControllers();
+    // Map controllers to enable attribute routing
+    app.MapControllers();
 
-app.Run();
+    app.Run();

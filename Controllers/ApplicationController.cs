@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using myApi.Data;
 using System.Diagnostics;
+using CsvHelper;
+using System.Globalization;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace myApi.Controllers
@@ -16,18 +19,18 @@ namespace myApi.Controllers
 
     public class ApplicationController : ControllerBase
     {
-       
+
 
         //so changes can be updated directly from database
         private readonly DataContext _context;
         private readonly ActivityDbContext _activity;
-        public ApplicationController(DataContext context , ActivityDbContext activityDbContext)
+        public ApplicationController(DataContext context, ActivityDbContext activityDbContext)
         {
             _activity = activityDbContext;
             _context = context;
         }
 
-       
+
         [HttpGet]
         public async Task<ActionResult<List<Application>>> Get()
         {
@@ -35,7 +38,7 @@ namespace myApi.Controllers
             return Ok(await _context.Application.ToListAsync());
         }
 
-      
+
         [HttpPost("Add")]
         public async Task<ActionResult<List<Application>>> Add(Application _application)
         {
@@ -156,5 +159,55 @@ namespace myApi.Controllers
 
             return Ok();
         }
+        [HttpGet("Export CSV")]
+        public async Task<IActionResult> ExportApplications()
+        {
+            var applications = await _context.Application.ToListAsync();
+
+            using (var memoryStream = new MemoryStream())
+            using (var streamWriter = new StreamWriter(memoryStream))
+            using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+            {
+                csvWriter.WriteRecords(applications);
+                await streamWriter.FlushAsync();
+                memoryStream.Position = 0;
+
+                return File(memoryStream.ToArray(), "text/csv", "applications.csv");
+            }
+        }
+        [HttpPost("Import CSV")]
+        public async Task<IActionResult> ImportCsv(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("File not selected");
+
+            
+
+            try
+            {
+                using (var reader = new StreamReader(file.OpenReadStream()))
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    var records = csv.GetRecords<Application>();
+                    foreach (var record in records)
+                    {
+                        // Process each record here
+                        // For example, add to the database or perform other operations
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+                // Return a generic error message to the client
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing the file.");
+            }
+
+            return Ok(await _context.Application.ToListAsync());
+        }
+
+
     }
 }
