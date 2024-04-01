@@ -11,7 +11,7 @@ using myApi.Data;
 namespace myApi.Migrations.ActivityDb
 {
     [DbContext(typeof(ActivityDbContext))]
-    [Migration("20240331195245_InitialCreate")]
+    [Migration("20240401182704_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

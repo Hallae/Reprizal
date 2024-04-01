@@ -43,9 +43,6 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-// Correctly retrieve the connection string
-var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var activityConnectionString = builder.Configuration.GetConnectionString("ActivityConnection");
 
 builder.Services.AddDbContext<DataContext>(options =>
 {

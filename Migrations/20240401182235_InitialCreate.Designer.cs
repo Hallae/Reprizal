@@ -12,8 +12,8 @@ using myApi.Data;
 namespace myApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240331200850_secondCreate")]
-    partial class secondCreate
+    [Migration("20240401182235_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

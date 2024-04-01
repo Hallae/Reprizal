@@ -13,13 +13,10 @@ namespace myApi
 
         [Required]
         public string activity { get; set; }
-
-
+        [Required]
         public string name { get; set; }
         public string description { get; set; }
         public string outline { get; set; }
-
-
         public bool IsSubmitted { get; set; }
         public DateTime SubmissionDate { get; set; }
     }
