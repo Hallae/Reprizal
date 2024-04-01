@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using myApi.Data;
 using myApi.Services.UserService;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace myApi.Controllers
 {
@@ -20,10 +16,9 @@ namespace myApi.Controllers
         public static User user = new User();
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
-        private readonly DataContext _context;
-        public AuthController(IConfiguration configuration, IUserService userService, DataContext context)
+
+        public AuthController(IConfiguration configuration, IUserService userService)
         {
-            _context = context;
             _configuration = configuration;
             _userService = userService;
         }
@@ -43,7 +38,7 @@ namespace myApi.Controllers
             user.Username = request.Username;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            
+
             return Ok(user);
         }
 
@@ -118,21 +113,13 @@ namespace myApi.Controllers
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, user.Username),
-        new Claim(ClaimTypes.Role, "Admin")
-    };
-
-            // Ensure the key is at least 64 bytes (512 bits) long
-            var keyBytes = System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
-            if (keyBytes.Length < 64)
             {
-                var newKeyBytes = new byte[64];
-                Array.Copy(keyBytes, newKeyBytes, keyBytes.Length);
-                keyBytes = newKeyBytes;
-            }
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, "Admin")
+            };
 
-            var key = new SymmetricSecurityKey(keyBytes);
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+                _configuration.GetSection("AppSettings:Token").Value));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -145,8 +132,6 @@ namespace myApi.Controllers
 
             return jwt;
         }
-
-
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {

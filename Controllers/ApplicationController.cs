@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using myApi.Data;
@@ -10,7 +12,8 @@ namespace myApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class ApplicationController : ControllerBase
     {
        
@@ -23,8 +26,8 @@ namespace myApi.Controllers
             _activity = activityDbContext;
             _context = context;
         }
-     
 
+       
         [HttpGet]
         public async Task<ActionResult<List<Application>>> Get()
         {
@@ -123,7 +126,7 @@ namespace myApi.Controllers
 
 
         [HttpDelete("Delete")]
-        public async Task<ActionResult<List<Application>>> DeleteApplication(int id)
+        public async Task<ActionResult<List<Application>>> DeleteApplication(Guid id)
         {
             var dbNewApplications = await _context.Application.FindAsync(id);
             if (dbNewApplications == null)
@@ -140,7 +143,7 @@ namespace myApi.Controllers
         }
 
         [HttpPost("submit")]
-        public async Task<ActionResult<List<Application>>> Submit(int id)
+        public async Task<ActionResult<List<Application>>> Submit(Guid id)
         {
             var dbNewApplications = await _context.Application.FindAsync(id);
             if (dbNewApplications == null)

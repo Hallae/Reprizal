@@ -13,6 +13,12 @@ using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Ensure the appsettings.json file is correctly loaded
+builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
 // Add services to the container
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -26,6 +32,7 @@ builder.Services.AddSwaggerGen(c =>
     });
     c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
 // Define an authorization policy.
 builder.Services.AddAuthorization(options =>
 {
@@ -33,7 +40,13 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Admin"));
 });
 
+
 builder.Services.AddHttpContextAccessor();
+
+// Correctly retrieve the connection string
+var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var activityConnectionString = builder.Configuration.GetConnectionString("ActivityConnection");
+
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -42,18 +55,22 @@ builder.Services.AddDbContext<ActivityDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ActivityConnection"));
 });
+
+// Configure JWT Bearer authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Key").Value)),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
         };
     });
+
+
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllers();
 builder.Services.AddRouting();
@@ -66,10 +83,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("NgOrigins");
 
 app.UseHttpsRedirection();
+
 app.UseRouting();
+
 app.UseAuthentication(); // Ensure authentication middleware is added
+
 app.UseAuthorization(); // Ensure authorization middleware is added
 
 // Map controllers to enable attribute routing
