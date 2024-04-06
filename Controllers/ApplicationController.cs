@@ -48,7 +48,7 @@ namespace myApi.Controllers
             }
 
             var existingApplication = await _context.Application.FindAsync(_application.id);
-            if (existingApplication != null)
+            if (existingApplication != null )
             {
                 _application.IsSubmitted = existingApplication.IsSubmitted;
             }
@@ -56,6 +56,7 @@ namespace myApi.Controllers
             {
                 _application.IsSubmitted = false;
             }
+
 
             _context.Application.Add(_application);
             await _context.SaveChangesAsync();
