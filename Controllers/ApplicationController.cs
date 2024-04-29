@@ -41,7 +41,11 @@ namespace myApi.Controllers
 
         [HttpPost("Add")]
         public async Task<ActionResult<List<Application>>> Add(Application _application)
+           
         {
+            _application.id = Guid.NewGuid();
+            _application.author = Guid.NewGuid();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -175,38 +179,7 @@ namespace myApi.Controllers
                 return File(memoryStream.ToArray(), "text/csv", "applications.csv");
             }
         }
-        [HttpPost("Import CSV")]
-        public async Task<IActionResult> ImportCsv(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-                return BadRequest("File not selected");
-
-            
-
-            try
-            {
-                using (var reader = new StreamReader(file.OpenReadStream()))
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                {
-                    var records = csv.GetRecords<Application>();
-                    foreach (var record in records)
-                    {
-                        // Process each record here
-                        // For example, add to the database or perform other operations
-                    }
-
-                    await _context.SaveChangesAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log the exception for debugging purposes
-                // Return a generic error message to the client
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing the file.");
-            }
-
-            return Ok(await _context.Application.ToListAsync());
-        }
+       
 
 
     }
