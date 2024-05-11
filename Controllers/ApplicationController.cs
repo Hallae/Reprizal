@@ -25,7 +25,7 @@ namespace myApi.Controllers
 
 
         private readonly IGuidGenerator _guidGenerator;
-        private readonly IContextApplication _contextrepo; //
+        private readonly IContextApplication _contextrepo; 
         private readonly DataContext _context;
         
         public ApplicationController(DataContext context, IContextApplication contextrepo, IGuidGenerator guidGenerator)

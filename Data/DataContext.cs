@@ -16,16 +16,6 @@ namespace myApi.Data
         }
     }
 
-    public class ActivityDbContext : DbContext
-    {
-        public ActivityDbContext(DbContextOptions<ActivityDbContext> options) : base(options) { }
-        public DbSet<Activity> Activities { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Activity>()
-                .HasNoKey();
-        }
-    }
+   
 
 }
