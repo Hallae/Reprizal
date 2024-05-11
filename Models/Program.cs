@@ -9,6 +9,9 @@ global using Microsoft.OpenApi.Models;
 using myApi.Data;
 using myApi.Services.UserService;
 using Swashbuckle.AspNetCore.Filters;
+using myApi.Interfaces;
+using myApi.Repository;
+using myApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,10 +69,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
-
+    builder.Services.AddScoped<IGuidGenerator, GuidGenerator>();
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddControllers();
     builder.Services.AddRouting();
+    builder.Services.AddScoped<IContextApplication, ApplicationRepository>();
+ 
 
     var app = builder.Build();
 

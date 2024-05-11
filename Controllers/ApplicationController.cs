@@ -9,6 +9,9 @@ using System.Diagnostics;
 using CsvHelper;
 using System.Globalization;
 using static System.Net.Mime.MediaTypeNames;
+using myApi.Repository;
+using myApi.Interfaces;
+using myApi.Models;
 
 
 namespace myApi.Controllers
@@ -21,12 +24,14 @@ namespace myApi.Controllers
     {
 
 
-        //so changes can be updated directly from database
+        private readonly IGuidGenerator _guidGenerator;
+        private readonly IContextApplication _contextrepo; //
         private readonly DataContext _context;
-        private readonly ActivityDbContext _activity;
-        public ApplicationController(DataContext context, ActivityDbContext activityDbContext)
+        
+        public ApplicationController(DataContext context, IContextApplication contextrepo, IGuidGenerator guidGenerator)
         {
-            _activity = activityDbContext;
+            _guidGenerator = guidGenerator;
+            _contextrepo = contextrepo;
             _context = context;
         }
 
@@ -35,7 +40,7 @@ namespace myApi.Controllers
         public async Task<ActionResult<List<Application>>> Get()
         {
 
-            return Ok(await _context.Application.ToListAsync());
+            return Ok(await _contextrepo.GetAllAsync());
         }
 
 
@@ -43,8 +48,8 @@ namespace myApi.Controllers
         public async Task<ActionResult<List<Application>>> Add(Application _application)
            
         {
-            _application.id = Guid.NewGuid();
-            _application.author = Guid.NewGuid();
+            _application.id = _guidGenerator.GenerateNewId();
+            _application.author = _guidGenerator.GenerateNewAuthor();
 
             if (!ModelState.IsValid)
             {
@@ -65,7 +70,7 @@ namespace myApi.Controllers
             _context.Application.Add(_application);
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.Application.ToListAsync());
+            return Ok(await _contextrepo.GetAllAsync());
         }
 
 
@@ -96,16 +101,10 @@ namespace myApi.Controllers
         }
 
         [HttpGet("Activities")]
-        public ActionResult<IEnumerable<Activity>> GetActivities()
+        public async Task<ActionResult<IEnumerable<Activity>>> GetActivities()
         {
-            var activities = new List<Activity>
-            {
-                new Activity { ActivityType = "Report", Description = "Доклад, 35-45 минут" },
-                new Activity { ActivityType = "Masterclass", Description = "Мастеркласс, 1-2 часа" },
-                new Activity { ActivityType = "Discussion", Description = "Дискуссия / круглый стол, 40-50 минут" }
-            };
-
-            return activities;
+            var activities = await _contextrepo.GetActivitiesAsync();
+            return Ok(activities);
         }
 
 
@@ -128,7 +127,7 @@ namespace myApi.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.Application.ToListAsync());
+            return Ok(await _contextrepo.GetAllAsync());
         }
 
 
@@ -147,7 +146,7 @@ namespace myApi.Controllers
             _context.Application.Remove(dbNewApplications);
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.Application.ToListAsync());
+            return Ok(await _contextrepo.GetAllAsync());
         }
 
         [HttpPost("submit")]
@@ -167,7 +166,7 @@ namespace myApi.Controllers
         [HttpGet("Export CSV")]
         public async Task<IActionResult> ExportApplications()
         {
-            var applications = await _context.Application.ToListAsync();
+            var applications = await _contextrepo.GetAllAsync();
 
             using (var memoryStream = new MemoryStream())
             using (var streamWriter = new StreamWriter(memoryStream))
