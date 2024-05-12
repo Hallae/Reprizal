@@ -11,6 +11,11 @@ namespace myApi.Services.UserService
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public Task CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetMyName()
         {
             var result = string.Empty;

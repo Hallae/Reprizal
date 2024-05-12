@@ -3,6 +3,7 @@ using myApi.Data;
 using CsvHelper;
 using System.Globalization;
 using myApi.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -10,7 +11,7 @@ namespace myApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
 
     public class ApplicationController : ControllerBase
     {
