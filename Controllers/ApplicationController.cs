@@ -129,7 +129,7 @@ namespace myApi.Controllers
         [HttpPut("Update")]
         public async Task<ActionResult<List<Application>>> UpdateApplication(Application request)
         {
-            var dbApplications = await _context.Application.FindAsync(request.id);
+            var dbApplications = await _contextrepo.FindAsync(request.id);
             if (dbApplications == null)
                 return BadRequest("Application not found");
 
@@ -156,11 +156,11 @@ namespace myApi.Controllers
         [HttpDelete("Delete")]
         public async Task<ActionResult<List<Application>>> DeleteApplication(Guid id)
         {
-            var dbNewApplications = await _context.Application.FindAsync(id);
+            var dbNewApplications = await _contextrepo.FindAsync(id);
             if (dbNewApplications == null)
                 return BadRequest("Application not found");
 
-            var dbApplications = await _context.Application.FindAsync(id);
+            var dbApplications = await _contextrepo.FindAsync(id);
             if (dbApplications.IsSubmitted)
                 return BadRequest("Submitted applications cannot be deleted");
 
@@ -179,7 +179,7 @@ namespace myApi.Controllers
         [HttpPost("submit")]
         public async Task<ActionResult<List<Application>>> Submit(Guid id)
         {
-            var dbNewApplications = await _context.Application.FindAsync(id);
+            var dbNewApplications = await _contextrepo.FindAsync(id);
             if (dbNewApplications == null)
                 return BadRequest("Application not found");
 

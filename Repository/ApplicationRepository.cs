@@ -1,5 +1,6 @@
 ﻿using myApi.Data;
 using myApi.Interfaces;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace myApi.Repository
 {
@@ -15,8 +16,10 @@ namespace myApi.Repository
         public Task<List<Application>> GetAllAsync()
         {
             return _context.Application.ToListAsync();
+
         }
 
+       
         public async Task<IEnumerable<Activity>> GetActivitiesAsync()
         {
             var activities = new List<Activity>
@@ -27,6 +30,11 @@ namespace myApi.Repository
             };
 
             return activities;
+        }
+
+        public async Task<Application> FindAsync(Guid id)
+        {
+            return await _context.Application.FindAsync(id);
         }
     }
 }
