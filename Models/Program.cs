@@ -1,10 +1,7 @@
 global using Microsoft.EntityFrameworkCore;
-global using Swashbuckle.AspNetCore;
-global using Microsoft.EntityFrameworkCore.Design;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
 global using System.Text;
-global using Microsoft.Extensions.Options;
 global using Microsoft.OpenApi.Models;
 using myApi.Data;
 using myApi.Services.UserService;
