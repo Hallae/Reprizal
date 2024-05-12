@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-// Define an authorization policy.
+// Define an authorization policy for application controller
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy =>

@@ -28,7 +28,10 @@ namespace myApi.Controllers
             _context = context;
         }
 
-
+        /// <summary>
+        /// Get a list of all applications in the database
+        /// </summary>
+     
         [HttpGet]
         public async Task<ActionResult<List<Application>>> Get()
         {
@@ -36,6 +39,11 @@ namespace myApi.Controllers
             return Ok(await _contextrepo.GetAllAsync());
         }
 
+        /// <summary>
+        /// create a new appliction
+        /// </summary>
+        /// <param name="_application"></param>
+   
 
         [HttpPost("Add")]
         public async Task<ActionResult<List<Application>>> Add(Application _application)
@@ -68,7 +76,10 @@ namespace myApi.Controllers
 
 
 
-
+        /// <summary>
+        /// Shows a list of unsubmitted applications older than a specified date
+        /// </summary>
+       
         [HttpGet("unsubmittedOlder")]
         public async Task<ActionResult<List<Application>>> GetUnsubmittedOlder()
         {
@@ -81,6 +92,9 @@ namespace myApi.Controllers
             return Ok(applications);
         }
 
+        /// <summary>
+        /// Shows a list of submitted applications after than a specified date
+        /// </summary>
         [HttpGet("submittedAfter")]
         public async Task<ActionResult<List<Application>>> GetSubmission()
         {
@@ -93,6 +107,10 @@ namespace myApi.Controllers
             return Ok(applications);
         }
 
+        /// <summary>
+        /// Shows a list of activies
+        /// </summary>
+       
         [HttpGet("Activites")]
         public async Task<ActionResult<IEnumerable<Activity>>> GetActivities()
         {
@@ -102,6 +120,10 @@ namespace myApi.Controllers
         }
 
 
+        /// <summary>
+        /// Updates applications with new info
+        /// </summary>
+        /// <param name="request"></param>
 
 
         [HttpPut("Update")]
@@ -125,6 +147,10 @@ namespace myApi.Controllers
             return Ok(await _contextrepo.GetAllAsync());
         }
 
+        /// <summary>
+        /// Deletes applications by id
+        /// </summary>
+        /// <param name="id"></param>
 
 
         [HttpDelete("Delete")]
@@ -144,6 +170,12 @@ namespace myApi.Controllers
             return Ok(await _contextrepo.GetAllAsync());
         }
 
+
+        /// <summary>
+        /// submits an application
+        /// </summary>
+        /// <param name="id"></param>
+     
         [HttpPost("submit")]
         public async Task<ActionResult<List<Application>>> Submit(Guid id)
         {
@@ -158,6 +190,11 @@ namespace myApi.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Exports a list of all application from the database
+        /// </summary>
+      
         [HttpGet("Export CSV")]
         public async Task<IActionResult> ExportApplications()
         {

@@ -2,8 +2,8 @@
 using Moq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using myApi.Controllers; // Adjust this using directive to match your project's namespace
-using myApi.Services.UserService; // Adjust this using directive to match your project's namespace
+using myApi.Controllers; 
+using myApi.Services.UserService; 
 
 namespace myApi.Tests
 {

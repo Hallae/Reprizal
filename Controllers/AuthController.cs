@@ -21,6 +21,7 @@ namespace myApi.Controllers
             _userService = userService;
         }
 
+        
         [HttpGet, Authorize]
         public ActionResult<string> GetMe()
         {
@@ -28,6 +29,11 @@ namespace myApi.Controllers
             return Ok(userName);
         }
 
+        /// <summary>
+        /// Register user
+        /// </summary>
+        /// <param name="request"></param>
+        
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserDto request)
         {
@@ -40,6 +46,11 @@ namespace myApi.Controllers
             return Ok(user);
         }
 
+        /// <summary>
+        /// Login with user credentials
+        /// </summary>
+        /// <param name="request"></param>
+        
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
@@ -61,6 +72,10 @@ namespace myApi.Controllers
             return Ok(token);
         }
 
+        /// <summary>
+        /// refresh token after timeout
+        /// </summary>
+      
         [HttpPost("refresh-token")]
         public async Task<ActionResult<string>> RefreshToken()
         {
@@ -82,6 +97,10 @@ namespace myApi.Controllers
             return Ok(token);
         }
 
+        /// <summary>
+        /// Generate refresh token
+        /// </summary>
+        /// <returns></returns>
         private RefreshToken GenerateRefreshToken()
         {
             var refreshToken = new RefreshToken
@@ -94,6 +113,10 @@ namespace myApi.Controllers
             return refreshToken;
         }
 
+        /// <summary>
+        /// Set refreshtoken
+        /// </summary>
+        /// <param name="newRefreshToken"></param>
         private void SetRefreshToken(RefreshToken newRefreshToken)
         {
             var cookieOptions = new CookieOptions
@@ -108,6 +131,11 @@ namespace myApi.Controllers
             user.TokenExpires = newRefreshToken.Expires;
         }
 
+        /// <summary>
+        /// Create user token
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
@@ -131,6 +159,12 @@ namespace myApi.Controllers
             return jwt;
         }
 
+        /// <summary>
+        /// Create hash for password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="passwordHash"></param>
+        /// <param name="passwordSalt"></param>
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
@@ -140,6 +174,13 @@ namespace myApi.Controllers
             }
         }
 
+        /// <summary>
+        /// verify passwordhash
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="passwordHash"></param>
+        /// <param name="passwordSalt"></param>
+     
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512(passwordSalt))
