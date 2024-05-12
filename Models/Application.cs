@@ -4,6 +4,7 @@ namespace myApi
 {
     public class Application
     {
+
         [Key]
         [Required]// This attribute specifies that the Id property is the primary key
         public Guid id { get; set; } = Guid.NewGuid();

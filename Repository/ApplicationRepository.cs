@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using myApi.Data;
+﻿using myApi.Data;
 using myApi.Interfaces;
 
 namespace myApi.Repository
@@ -8,10 +6,10 @@ namespace myApi.Repository
     public class ApplicationRepository : IContextApplication
     {
         private readonly DataContext _context;
-
+    
         public ApplicationRepository(DataContext context)
         {
-
+         
             _context = context;
         }
         public Task<List<Application>> GetAllAsync()

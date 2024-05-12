@@ -1,17 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using myApi.Data;
-using System.Diagnostics;
 using CsvHelper;
 using System.Globalization;
-using static System.Net.Mime.MediaTypeNames;
-using myApi.Repository;
 using myApi.Interfaces;
-using myApi.Models;
+
 
 
 namespace myApi.Controllers
@@ -100,12 +92,14 @@ namespace myApi.Controllers
             return Ok(applications);
         }
 
-        [HttpGet("Activities")]
+        [HttpGet("Activites")]
         public async Task<ActionResult<IEnumerable<Activity>>> GetActivities()
         {
             var activities = await _contextrepo.GetActivitiesAsync();
             return Ok(activities);
+
         }
+
 
 
 
