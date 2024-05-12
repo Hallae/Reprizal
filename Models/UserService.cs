@@ -25,5 +25,15 @@ namespace myApi.Services.UserService
             }
             return result;
         }
+
+        public Task<string> Login(UserDto userDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> Register(UserDto userDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
