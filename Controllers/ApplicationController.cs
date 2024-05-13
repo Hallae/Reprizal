@@ -129,22 +129,15 @@ namespace myApi.Controllers
         [HttpPut("Update")]
         public async Task<ActionResult<List<Application>>> UpdateApplication(Application request)
         {
-            var dbApplications = await _contextrepo.FindAsync(request.id);
-            if (dbApplications == null)
-                return BadRequest("Application not found");
-
-            // Check if the application has been submitted
-            if (dbApplications.IsSubmitted)
-                return BadRequest("Application has already been submitted and cannot be edited.");
-
-            dbApplications.activity = request.activity;
-            dbApplications.name = request.name;
-            dbApplications.description = request.description;
-            dbApplications.outline = request.outline;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(await _contextrepo.GetAllAsync());
+            try
+            {
+                await _contextrepo.UpdateApplication(request);
+                return Ok(await _contextrepo.GetAllAsync());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
