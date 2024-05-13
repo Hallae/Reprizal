@@ -173,4 +173,33 @@ The API does the following:
 *	a request to receive both submitted and non-submitted applications at the same time should be considered incorrect.
 
 
- 
+
+
+
+
+
+
+*How To Use*
+
+* Register with your credentials
+* Login with your credentials
+* Copy token in the response body.
+  
+  Example "  eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoic3RyaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MTU2NDE1NTl9.J5NZqGoubeE-5Ai_XR06bu8kDUsSGWrqpluIgQ-HNF19aAAiIRl33-BPLEXijghwkC-vGvCvbYcCqfDsffC6WA "
+
+* Click Authorize and enter " bearer with copied token from response body"
+
+  Example " bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoic3RyaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MTU2NDE1NTl9.J5NZqGoubeE-5Ai_XR06bu8kDUsSGWrqpluIgQ-HNF19aAAiIRl33-BPLEXijghwkC-vGvCvbYcCqfDsffC6WA"
+
+
+
+*Tech Stack*
+
+
+* EntityFramework
+* Moq
+* Microsoft SQl
+* JwT
+* .Net 6
+
+
