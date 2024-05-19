@@ -11,7 +11,7 @@ namespace myApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
 
     public class ApplicationController : ControllerBase
     {
@@ -112,7 +112,7 @@ namespace myApi.Controllers
         /// </summary>
        
         [HttpGet("Activites")]
-        public async Task<ActionResult<IEnumerable<Activity>>> GetActivities()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetActivities()
         {
             var activities = await _contextrepo.GetActivitiesAsync();
             return Ok(activities);

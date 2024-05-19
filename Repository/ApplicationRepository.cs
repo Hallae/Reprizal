@@ -22,13 +22,13 @@ namespace myApi.Repository
         }
 
        
-        public async Task<IEnumerable<Activity>> GetActivitiesAsync()
+        public async Task<IEnumerable<dynamic>> GetActivitiesAsync()
         {
-            var activities = new List<Activity>
+            var activities = new List<dynamic>
             {
-        new Activity { ActivityType = "Report", Description = "Доклад, 35-45 минут" },
-        new Activity { ActivityType = "Masterclass", Description = "Мастеркласс, 1-2 часа" },
-        new Activity { ActivityType = "Discussion", Description = "Дискуссия / круглый стол, 40-50 минут" }
+        new  { ActivityType = "Report", Description = "Доклад, 35-45 минут" },
+        new  { ActivityType = "Masterclass", Description = "Мастеркласс, 1-2 часа" },
+        new  { ActivityType = "Discussion", Description = "Дискуссия / круглый стол, 40-50 минут" }
             };
 
             return activities;
