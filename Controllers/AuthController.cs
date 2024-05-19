@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using myApi.Services.UserService;
+using StackExchange.Redis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -14,9 +15,11 @@ namespace myApi.Controllers
         public static User user = new User();
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
+        //private readonly IDatabase _redisdb;
 
         public AuthController(IConfiguration configuration, IUserService userService)
         {
+           // _redisdb = redisdb;
             _configuration = configuration;
             _userService = userService;
         }
@@ -50,7 +53,7 @@ namespace myApi.Controllers
         /// Login with user credentials
         /// </summary>
         /// <param name="request"></param>
-        
+
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
@@ -71,11 +74,10 @@ namespace myApi.Controllers
 
             return Ok(token);
         }
-
         /// <summary>
         /// refresh token after timeout
         /// </summary>
-      
+
         [HttpPost("refresh-token")]
         public async Task<ActionResult<string>> RefreshToken()
         {
