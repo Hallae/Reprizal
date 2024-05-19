@@ -46,29 +46,29 @@ namespace myApi.Controllers
    
 
         [HttpPost("Add")]
-        public async Task<ActionResult<List<Application>>> Add(Application _application)
+        public async Task<ActionResult<List<Application>>> Add(Application application)
            
         {
-            _application.id = _guidGenerator.GenerateNewId();
-            _application.author = _guidGenerator.GenerateNewAuthor();
+            application.id = _guidGenerator.GenerateNewId();
+            application.author = _guidGenerator.GenerateNewAuthor();
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var existingApplication = await _context.Application.FindAsync(_application.id);
+            var existingApplication = await _context.Application.FindAsync(application.id);
             if (existingApplication != null )
             {
-                _application.IsSubmitted = existingApplication.IsSubmitted;
+                application.IsSubmitted = existingApplication.IsSubmitted;
             }
             else
             {
-                _application.IsSubmitted = false;
+                application.IsSubmitted = false;
             }
 
 
-            _context.Application.Add(_application);
+            _context.Application.Add(application);
             await _context.SaveChangesAsync();
 
             return Ok(await _contextrepo.GetAllAsync());
@@ -168,7 +168,7 @@ namespace myApi.Controllers
         /// submits an application
         /// </summary>
         /// <param name="id"></param>
-     
+
         [HttpPost("submit")]
         public async Task<ActionResult<List<Application>>> Submit(Guid id)
         {
@@ -187,25 +187,25 @@ namespace myApi.Controllers
         /// <summary>
         /// Exports a list of all application from the database
         /// </summary>
-      
+
         [HttpGet("Export CSV")]
-        public async Task<IActionResult> ExportApplications()
-        {
-            var applications = await _contextrepo.GetAllAsync();
+   public async Task<IActionResult> ExportApplications()
+   {
+       var applications = await _contextrepo.GetAllAsync();
 
-            using (var memoryStream = new MemoryStream())
-            using (var streamWriter = new StreamWriter(memoryStream))
-            using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
-            {
-                csvWriter.WriteRecords(applications);
-                await streamWriter.FlushAsync();
-                memoryStream.Position = 0;
+       using (var memoryStream = new MemoryStream())
+       using (var streamWriter = new StreamWriter(memoryStream))
+       using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+       {
+           csvWriter.WriteRecords(applications);
+           await streamWriter.FlushAsync();
+           memoryStream.Position = 0;
 
-                return File(memoryStream.ToArray(), "text/csv", "applications.csv");
-            }
-        }
-       
+           return File(memoryStream.ToArray(), "text/csv", "applications.csv");
+       }
+   }
 
 
-    }
+
+}
 }
