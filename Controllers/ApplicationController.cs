@@ -98,7 +98,7 @@ namespace myApi.Controllers
         [HttpGet("submittedAfter")]
         public async Task<ActionResult<List<Application>>> GetSubmission()
         {
-            DateTime specificDate = new DateTime(2024, 1, 1, 23, 0, 0, 0);
+            DateTime specificDate = new DateTime(2024, 1, 1, 23, 0, 0, 0, DateTimeKind.Utc);
 
             var applications = await _context.Application
                 .Where(a => a.SubmissionDate > specificDate)

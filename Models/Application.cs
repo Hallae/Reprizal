@@ -19,7 +19,8 @@ namespace myApi
         public string description { get; set; }
         public string outline { get; set; }
         public bool IsSubmitted { get; set; }
-        public DateTime SubmissionDate { get; set; }
+        public DateTime SubmissionDate { get; set; } = DateTime.UtcNow;
+
     }
 }
 
