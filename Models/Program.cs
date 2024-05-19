@@ -7,8 +7,9 @@ using myApi.Data;
 using myApi.Services.UserService;
 using Swashbuckle.AspNetCore.Filters;
 using myApi.Interfaces;
-using myApi.Repository;
+//using myApi.Repository;
 using myApi.Models;
+using myApi.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 

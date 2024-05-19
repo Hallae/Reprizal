@@ -201,5 +201,6 @@ The API does the following:
 * Microsoft SQl
 * JwT
 * .Net 6
+* xUnit
 
 
