@@ -6,15 +6,16 @@ namespace myApi
     {
 
         [Key]
-        [Required]// This attribute specifies that the Id property is the primary key
+        [Required(ErrorMessage = " Guild is a required field")]// This attribute specifies that the Id property is the primary key
         public Guid id { get; set; } = Guid.NewGuid();
-        // Make the property settable and initialize with a new GUID
+        
         public Guid author { get; set; } = Guid.NewGuid();
 
 
-        [Required]
+        [Required(ErrorMessage = "activity is a required field.")]
         public string activity { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "name is a required field.")]
         public string name { get; set; }
         public string description { get; set; }
         public string outline { get; set; }
