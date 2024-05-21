@@ -74,6 +74,32 @@ namespace myApi.Controllers
 
             return Ok(token);
         }
+
+
+
+        /// <summary>
+        /// logout
+        /// </summary>
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+           
+            user.TokenExpires = DateTime.UtcNow;
+
+         
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = new DateTime(1970, 1, 1) 
+            };
+            Response.Cookies.Delete("refreshToken");
+
+
+            return Ok(); 
+        }
+
+
         /// <summary>
         /// refresh token after timeout
         /// </summary>
