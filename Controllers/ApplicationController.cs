@@ -56,6 +56,7 @@ namespace myApi.Controllers
             {
                 return BadRequest(ModelState);
             }
+       
 
             var existingApplication = await _context.Application.FindAsync(application.id);
             if (existingApplication != null )

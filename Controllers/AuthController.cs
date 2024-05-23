@@ -84,20 +84,32 @@ namespace myApi.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-           
+            // Check if the user has a valid session token
+            if (!Request.Headers.ContainsKey("Authorization") || !ValidateSessionToken(Request.Headers["Authorization"]))
+            {
+                return Unauthorized("Not authorized to perform this action.");
+            }
+
             user.TokenExpires = DateTime.UtcNow;
 
-         
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = new DateTime(1970, 1, 1) 
+                Expires = new DateTime(1970, 1, 1)
             };
             Response.Cookies.Delete("refreshToken");
 
-
-            return Ok(); 
+            return Ok();
         }
+
+        private bool ValidateSessionToken(string authorizationHeader)
+        {
+            // Implement validation logic here
+            // This could involve decoding the JWT token and checking its expiration
+            // For simplicity, this example assumes the token is valid if it exists
+            return !string.IsNullOrEmpty(authorizationHeader);
+        }
+
 
 
         /// <summary>
